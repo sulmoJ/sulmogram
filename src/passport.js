@@ -8,6 +8,7 @@ const jwtOptions = {
   secretOrKey: process.env.JWT_SECRET,
 };
 
+// 해당 아이디와 비밀키를 입력받고 해석하여 토큰을 콜백함수로 리턴
 const verifyUser = async (payload, done) => {
   try {
     const user = await prisma.user({ id: payload.id });
@@ -21,6 +22,7 @@ const verifyUser = async (payload, done) => {
   }
 };
 
+// 인증용 미들웨어
 export const authenticateJwt = (req, res, next) =>
   passport.authenticate("jwt", { session: false }, (errer, user) => {
     if (user) {

@@ -37,4 +37,5 @@ export const sendSecretMail = (adress, secret) => {
   return sendMail(email);
 };
 
+//jsonwebtoken 만들기
 export const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET);
