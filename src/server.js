@@ -4,6 +4,7 @@ import { GraphQLServer } from "graphql-yoga";
 import logger from "morgan";
 import schema from "./schema";
 import { authenticateJwt } from "./passport";
+import { isAuthenticated } from "./middlewares";
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
@@ -13,6 +14,7 @@ const server = new GraphQLServer({
   schema,
   context: ({ request }) => ({
     request,
+    isAuthenticated,
   }),
 });
 
