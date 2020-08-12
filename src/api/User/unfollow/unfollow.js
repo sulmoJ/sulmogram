@@ -1,4 +1,5 @@
 import { isAuthenticated } from "../../../middlewares";
+import { prisma } from "../../../../generated/prisma-client";
 
 export default {
   Mutation: {
@@ -7,7 +8,7 @@ export default {
       const { id } = args;
       const { user } = request;
       try {
-        await deleteUser({
+        await prisma.updateUser({
           where: {
             id: user.id,
           },
