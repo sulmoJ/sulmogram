@@ -2,23 +2,30 @@ import { prisma } from "../../../../generated/prisma-client";
 
 export default {
   Query: {
-    seeFullPost: async (_, args) => {
+    seeFullPost: (_, args) => {
       const { id } = args;
-      const post = await prisma.post({ id });
-      const comments = await prisma.post({ id }).comments();
-      const likeCount = await prisma
-        .likesConnection({
-          where: {
-            post: { id },
-          },
-        })
-        .aggregate()
-        .count();
-      return {
-        post,
-        comments,
-        likeCount,
-      };
+      return prisma.post({ id }).$fragment(`
+      fragment PostPart on Post {
+        id
+        location
+        caption
+        files{
+          id
+          url
+        }
+        comments{
+          id
+          text
+          user {
+            username
+          }
+        }
+        user {
+          id
+          username
+        }
+      }
+    `);
     },
   },
 };
