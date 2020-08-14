@@ -20,33 +20,15 @@ export default {
                 },
               ],
             },
-          }).$fragment(`fragment RoomParts on Room {
-            id
-            participants {
-              id
-            }
-          }`);
+          });
         }
       } else {
-        room = await prisma.room({ id: roomId })
-          .$fragment(`fragment RoomParts on Room {
-          id
-          participants {
-            id
-          }
-        }`);
+        room = await prisma.room({ id: roomId });
       }
       if (!room) {
         throw Error("Room not found");
       }
-      console.log(room.participants);
-      const getTo = room.participants.filter(
-        (participant) => participant.id !== user.id
-      )[0];
-      console.log(user.id);
-      console.log(getTo.id);
-      console.log(toId);
-      console.log(room.id);
+      const getTo = await prisma.room({ id: roomId }).participants();
       return prisma.createMessage({
         text: message,
         from: {
@@ -56,7 +38,9 @@ export default {
         },
         to: {
           connect: {
-            id: roomId ? getTo.id : toId,
+            id: roomId
+              ? getTo.filter((participant) => participant.id !== user.id)[0].id
+              : toId,
           },
         },
         room: {

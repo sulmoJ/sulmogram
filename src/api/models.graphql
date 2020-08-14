@@ -1,13 +1,15 @@
 type User {
   id: ID!
   username: String!
-  avatar: String!
+  avatar: String
   email: String!
   firstName: String
   lastName: String
   fullName: String
   bio: String
+  followersCount: Int!
   followers: [User!]!
+  followingCount: Int!
   following: [User!]!
   posts: [Post!]!
   likes: [Like!]!
@@ -62,6 +64,7 @@ type File {
 type Room {
   id: ID!
   participants: [User!]!
+  messages: [Message!]!
   createdAt: String!
   updatedAt: String!
 }
@@ -72,13 +75,6 @@ type Message {
   from: User!
   to: User!
   room: Room!
-  createdAt: String!
-  updatedAt: String!
-}
-
-type UserProfile {
-  user: User!
-  posts: [Post!]!
   createdAt: String!
   updatedAt: String!
 }
