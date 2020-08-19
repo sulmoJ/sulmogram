@@ -16,15 +16,8 @@ const sendMail = (email) => {
       api_key: process.env.SENDGRID_PASSWORD,
     },
   };
-  console.log("이메일 보냄!");
   const client = nodemailer.createTransport(sgTransport(options));
-  return client.sendMail(email, (err, info) => {
-    if (err) {
-      console.log("이메일 도착 실패");
-    } else {
-      console.log(`Message sent : ${info.response}`);
-    }
-  });
+  return client.sendMail(email, (err, info) => console.log(info.message));
 };
 
 export const sendSecretMail = (adress, secret) => {
